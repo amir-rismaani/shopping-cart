@@ -1,0 +1,48 @@
+@import url("./assets/styles/fonts.css");
+
+/* Reset
+=========*/
+*,
+*::after,
+*::before{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* General
+===========*/
+:root{
+    --color-primary: #6d28d9;
+    --color-secondary: #ede9fa;
+    --color-white: #ffffff;
+    --color-black: #000000;
+    --color-gray: #7c7c7c;
+    --color-red: #db2777;
+    --color-bg: #f6f6f6;
+    --spacing: .1rem;
+    --transition: all .3s linear;
+}
+
+
+html{
+    direction: rtl;
+    font-size: 62.5%;
+}
+
+
+body, *{
+    font-family: vazir;
+    font-size: 1.6rem;
+}
+
+.container{
+    width: 970px;
+    margin: auto;
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+}
