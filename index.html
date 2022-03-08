@@ -1,29 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>فروشگاه</title>
-    <link 
-        rel="stylesheet" 
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
-        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" 
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer" 
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
     />
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header class="header">
-        <navbar class="navbar container">
-            <span class="navbar__cart">آیکن سبد خرید</span>
-            <span class="navbar__title">فروشگاه</span>
-            <span class="navbar__hamburger">آیکن  بار</span>
-        </navbar>
-    </header>
-    <main class="main"></main>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="navbar">
+      <nav class="nav container d-flex space-between">
+        <span class="nav__cart"
+          ><i class="fa-solid fa-cart-shopping"></i
+          ><span class="quantity d-flex justify-center align-center"
+            >0</span
+          ></span
+        >
+        <span class="nav__title">فروشگاه اینترنتی</span>
+        <span class="nav__hamburger"><i class="fa-solid fa-bars"></i></span>
+      </nav>
+    </div>
+    <main class="main">
+      <section class="container">
+        <h2 class="section-title">محصولات</h2>
+        <div class="products"></div>
+      </section>
+    </main>
     <footer class="footer"></footer>
     <script src="./scripts.js"></script>
-</body>
+  </body>
 </html>

@@ -4,45 +4,124 @@
 =========*/
 *,
 *::after,
-*::before{
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 /* General
 ===========*/
-:root{
-    --color-primary: #6d28d9;
-    --color-secondary: #ede9fa;
-    --color-white: #ffffff;
-    --color-black: #000000;
-    --color-gray: #7c7c7c;
-    --color-red: #db2777;
-    --color-bg: #f6f6f6;
-    --spacing: .1rem;
-    --transition: all .3s linear;
+:root {
+  --color-primary: #6d28d9;
+  --color-secondary: #ede9fa;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-gray: #7c7c7c;
+  --color-red: #db2777;
+  --color-bg: #f6f6f6;
+  --spacing: 0.1rem;
+  --transition: all 0.3s linear;
 }
 
-
-html{
-    direction: rtl;
-    font-size: 62.5%;
+html {
+  direction: rtl;
+  font-size: 62.5%;
 }
 
-
-body, *{
-    font-family: vazir;
-    font-size: 1.6rem;
+body,
+* {
+  font-family: vazir;
+  font-size: 1.6rem;
 }
 
-.container{
-    width: 970px;
-    margin: auto;
+body {
+  background-color: var(--color-bg);
 }
 
-.navbar{
-    display: flex;
-    justify-content: space-between;
+.d-flex {
+  display: flex;
+}
+
+.direction-column {
+  flex-direction: column;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+.container {
+  max-width: 1170px;
+  margin: auto;
+}
+
+.section-title {
+  font-size: 3rem;
+  text-align: center;
+  margin: 1.5rem auto;
+}
+
+.navbar {
+  background-color: var(--color-secondary);
+  padding: 1.5rem 0;
+}
+
+.nav .fa-solid {
+  font-size: 2rem;
+}
+
+.nav__cart,
+.nav__hamburger {
+  color: var(--color-primary);
+}
+
+.nav__cart {
+  position: relative;
+}
+
+.nav__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.quantity {
+  position: absolute;
+  right: -10px;
+  top: -5px;
+  background-color: var(--color-red);
+  color: var(--color-white);
+  border-radius: 100%;
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2.5rem;
+}
+
+.product {
+  background-color: var(--color-white);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.product__image img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+}
+
+.product__details {
+  padding: 1rem;
 }
