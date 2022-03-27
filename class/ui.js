@@ -1,5 +1,6 @@
 import Products from "./products.js";
 import Cart from "./cart.js";
+import Storage from "./storage.js";
 
 const products = new Products();
 const cart = new Cart();
@@ -61,56 +62,73 @@ export default class UI {
   addToCartActionButton() {
     const addToCartButtons = document.querySelectorAll(".product__add-to-cart");
     const buttons = [...addToCartButtons];
-
     buttons.forEach((button) => {
       const id = button.dataset.productId;
-      // this.changeCartButton(id);
-      button.addEventListener("click", (event) => {
-        const addToCartButton = event.target.parentElement;
-        const productDetail = addToCartButton.parentElement;
-        console.log("productDetail", productDetail);
-        addToCartButton.remove();
-        const cartLineQty = document.createElement("div");
-        cartLineQty.classList.add("cart-line__quantity");
-
-        cartLineQty.innerHTML = `
-          <span class="quantity-btn increase fa-solid fa-plus"></span>
-          <span class="quantity-value">1</span>
-          <span class="quantity-btn decrease fa-solid fa-minus"></span>
-        `;
-
-        productDetail.appendChild(cartLineQty);
-
+      const isInCart = cart.find(id);
+      if (isInCart) {
+        this.changeCartButton(id, isInCart.quantity);
+      }
+      button.addEventListener("click", () => {
         const product = products.find(id);
         const cartItem = { product, quantity: 1 };
         cart.addToCart(cartItem);
+        this.changeCartButton(id);
+        this.cartLayout();
       });
     });
   }
 
-  changeCartButton(productId) {
-    // const isInCart = cart.find(productId);
-    // if (isInCart) {
-    console.log("incar");
-    const productDetails = document.querySelector(".product__details");
+  changeCartButton(productId, quantity = 1) {
+    const button = document.querySelector(`[data-product-id="${productId}"]`);
+    const productDetails = button.parentElement;
+    button.remove();
+    const cartItem = cart.find(productId);
     const cartLineQty = document.createElement("div");
     cartLineQty.classList.add("cart-line__quantity");
-
+    cartLineQty.dataset.productId = productId;
     cartLineQty.innerHTML = `
       <span class="quantity-btn increase fa-solid fa-plus"></span>
-      <span class="quantity-value">1</span>
+      <span class="quantity-value">${quantity}</span>
       <span class="quantity-btn decrease fa-solid fa-minus"></span>
     `;
-
     productDetails.appendChild(cartLineQty);
-    // }
-  }
-  cartLayout() {
-    const cartItems = cart.items;
-    const article = document.createElement("article");
-    article.classList.add("cart-line");
 
+    this.updateCartButtons(cartItem);
+  }
+
+  updateCartButtons(productItem) {
+    const quantityButtons = document.querySelectorAll(".quantity-btn");
+    quantityButtons.forEach((quantityButton) => {
+      if (
+        productItem.product.ShopProductID ===
+        parseInt(quantityButton.parentElement.dataset.productId)
+      ) {
+        quantityButton.addEventListener("click", () => {
+          let quantityValueElm =
+            quantityButton.parentElement.querySelector(".quantity-value");
+
+          let quantityValue = quantityValueElm.textContent;
+          if (quantityButton.classList.contains("increase")) {
+            quantityValue++;
+          } else {
+            if (quantityValue > 1) quantityValue--;
+          }
+          quantityValueElm.textContent = quantityValue;
+          cart.updateCartLine({ ...productItem, quantity: quantityValue });
+          this.cartLayout();
+          return;
+        });
+      }
+    });
+  }
+
+  cartLayout() {
+    this.resetCartLayout();
+    const cartItems = cart.items;
+    let totalQuantity = 0;
     cartItems.forEach((cartItem) => {
+      const article = document.createElement("article");
+      article.classList.add("cart-line");
       let cartLineHtml = `
           <div class="cart-line__image">
             <img
@@ -139,21 +157,27 @@ export default class UI {
             </span>
           `;
       }
-
       cartLineHtml += `
       </div>
-          <div class="cart-line__quantity">
+          <div class="cart-line__quantity" data-product-id="${cartItem.product.ShopProductID}">
             <span class="quantity-btn increase fa-solid fa-plus"></span>
             <span class="quantity-value">${cartItem.quantity}</span>
             <span class="quantity-btn decrease fa-solid fa-minus"></span>
           </div>
       `;
+      totalQuantity += cartItem.quantity;
       article.innerHTML = cartLineHtml;
       cartContainer.appendChild(article);
+
+      this.updateCartButtons(cartItem);
     });
 
     const quantityLabel = document.querySelector(".quantity");
-    quantityLabel.innerText = cart.quantity;
+    quantityLabel.innerText = totalQuantity;
+  }
+
+  resetCartLayout() {
+    cartContainer.innerHTML = "";
   }
 
   showModal() {

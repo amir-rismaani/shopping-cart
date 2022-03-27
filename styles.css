@@ -1,4 +1,5 @@
 @import url("./assets/styles/fonts.css");
+@import url("./assets/styles/responsive.css");
 
 /* Reset
 =========*/
@@ -86,9 +87,6 @@ body {
 .navbar {
   background-color: var(--color-secondary);
   padding: 1.5rem 0;
-  position: fixed;
-  width: 100%;
-  top: 0;
 }
 
 .nav .fa-solid {

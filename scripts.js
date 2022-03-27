@@ -8,6 +8,7 @@ const backDrop = document.querySelector(".back-drop");
 
 document.addEventListener("DOMContentLoaded", () => {
   ui.productsLayout();
+  ui.cartLayout();
   ui.addToCartActionButton();
 });
 navCart.addEventListener("click", ui.showModal);
