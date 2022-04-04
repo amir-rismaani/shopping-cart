@@ -110,13 +110,15 @@ body {
 
 .quantity {
   position: absolute;
-  right: -10px;
-  top: -5px;
+  right: -8px;
+  top: -10px;
   background-color: var(--color-red);
   color: var(--color-white);
   border-radius: 100%;
   font-size: 1rem;
   padding: 0 0.5rem;
+  width: 18px;
+  height: 18px;
 }
 
 .products {

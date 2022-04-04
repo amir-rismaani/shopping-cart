@@ -15,14 +15,13 @@ export default class Cart {
   updateCartLine(item) {
     const targetItem = this.find(item.product.ShopProductID);
     const index = this.items.indexOf(targetItem);
-    this.items.splice(index, 1);
-    this.items = [...this.items, item];
+    this.items[index].quantity = item.quantity;
     Storage.saveCart(this.items);
   }
 
   find(shopProductID) {
     return this.items.find(
-      (cartItem) => cartItem.product.ShopProductID === parseInt(shopProductID)
+      (item) => item.product.ShopProductID === parseInt(shopProductID)
     );
   }
 }

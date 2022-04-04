@@ -1,6 +1,6 @@
 import Products from "./products.js";
 import Cart from "./cart.js";
-import Storage from "./storage.js";
+// import Storage from "./storage.js";
 
 const products = new Products();
 const cart = new Cart();
@@ -60,8 +60,7 @@ export default class UI {
   }
 
   addToCartActionButton() {
-    const addToCartButtons = document.querySelectorAll(".product__add-to-cart");
-    const buttons = [...addToCartButtons];
+    const buttons = document.querySelectorAll(".product__add-to-cart");
     buttons.forEach((button) => {
       const id = button.dataset.productId;
       const isInCart = cart.find(id);
@@ -97,28 +96,35 @@ export default class UI {
   }
 
   updateCartButtons(productItem) {
-    const quantityButtons = document.querySelectorAll(".quantity-btn");
-    quantityButtons.forEach((quantityButton) => {
-      if (
-        productItem.product.ShopProductID ===
-        parseInt(quantityButton.parentElement.dataset.productId)
-      ) {
-        quantityButton.addEventListener("click", () => {
-          let quantityValueElm =
-            quantityButton.parentElement.querySelector(".quantity-value");
+    const cartLineQuantity = document.querySelector(
+      `[data-product-id="${productItem.product.ShopProductID}"]`
+    );
 
-          let quantityValue = quantityValueElm.textContent;
-          if (quantityButton.classList.contains("increase")) {
-            quantityValue++;
-          } else {
-            if (quantityValue > 1) quantityValue--;
-          }
-          quantityValueElm.textContent = quantityValue;
-          cart.updateCartLine({ ...productItem, quantity: quantityValue });
-          this.cartLayout();
-          return;
-        });
+    cartLineQuantity.addEventListener("click", (event) => {
+      const targetEl = event.target;
+
+      let quantityValueElm = cartLineQuantity.querySelector(".quantity-value");
+      let quantityValue = quantityValueElm.textContent;
+
+      if (targetEl.classList.contains("increase")) {
+        quantityValue++;
+      } else {
+        if (quantityValue > 1) --quantityValue;
       }
+
+      const quantityElms = document.querySelectorAll(
+        `[data-product-id="${productItem.product.ShopProductID}"]`
+      );
+
+      quantityElms.forEach((quantityElm) => {
+        let quantityValueElms = quantityElm.querySelectorAll(".quantity-value");
+        quantityValueElms.forEach(
+          (quantityValueElm) => (quantityValueElm.textContent = quantityValue)
+        );
+      });
+
+      cart.updateCartLine({ ...productItem, quantity: quantityValue });
+      this.cartLayout();
     });
   }
 
