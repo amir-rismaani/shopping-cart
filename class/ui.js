@@ -1,6 +1,5 @@
 import Products from "./products.js";
 import Cart from "./cart.js";
-// import Storage from "./storage.js";
 
 const products = new Products();
 const cart = new Cart();
@@ -171,15 +170,18 @@ export default class UI {
             <span class="quantity-btn decrease fa-solid fa-minus"></span>
           </div>
       `;
-      totalQuantity += cartItem.quantity;
+      totalQuantity += parseInt(cartItem.quantity);
       article.innerHTML = cartLineHtml;
       cartContainer.appendChild(article);
 
       this.updateCartButtons(cartItem);
     });
 
+    cart.calculateTotal();
     const quantityLabel = document.querySelector(".quantity");
     quantityLabel.innerText = totalQuantity;
+    const total = modal.querySelector(".price");
+    total.innerHTML = this.separator(cart.total);
   }
 
   resetCartLayout() {

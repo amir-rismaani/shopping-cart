@@ -70,6 +70,10 @@ body {
   justify-content: center;
 }
 
+.justify-end {
+  justify-content: end;
+}
+
 .align-center {
   align-items: center;
 }
@@ -207,12 +211,30 @@ body {
   margin-right: -190px;
 }
 
+.modal .total {
+  margin: 1.5rem auto;
+}
+
+.total .total__value {
+  font-weight: 700;
+}
+.total .price {
+  margin-left: 0.2rem;
+  font-size: 2rem;
+}
+
 .modal__footer {
   margin-top: 1.5rem;
 }
 
 .btn {
   font-size: 18px;
+  background-color: var(--color-primary);
+  outline: none;
+  border: none;
+  color: var(--color-white);
+  padding: 0.2rem 1rem;
+  margin: auto 0.2rem;
 }
 
 .btn,
