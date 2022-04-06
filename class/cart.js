@@ -16,7 +16,8 @@ export default class Cart {
   updateCartLine(item) {
     const targetItem = this.find(item.product.ShopProductID);
     const index = this.items.indexOf(targetItem);
-    this.items[index].quantity = item.quantity;
+    if (item.quantity) this.items[index].quantity = item.quantity;
+    else this.items.splice(index, 1);
     Storage.saveCart(this.items);
   }
 

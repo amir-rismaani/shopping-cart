@@ -61,19 +61,22 @@ export default class UI {
   addToCartActionButton() {
     const buttons = document.querySelectorAll(".product__add-to-cart");
     buttons.forEach((button) => {
+      // button.removeEventListener("click", () => {});
       const id = button.dataset.productId;
       const isInCart = cart.find(id);
       if (isInCart) {
         this.changeCartButton(id, isInCart.quantity);
       }
-      button.addEventListener("click", () => {
-        const product = products.find(id);
-        const cartItem = { product, quantity: 1 };
-        cart.addToCart(cartItem);
-        this.changeCartButton(id);
-        this.cartLayout();
-      });
+      button.addEventListener("click", () => this.addToCartAction(id));
     });
+  }
+
+  addToCartAction(productId) {
+    const product = products.find(productId);
+    const cartItem = { product, quantity: 1 };
+    cart.addToCart(cartItem);
+    this.changeCartButton(productId);
+    this.cartLayout();
   }
 
   changeCartButton(productId, quantity = 1) {
@@ -95,30 +98,47 @@ export default class UI {
   }
 
   updateCartButtons(productItem) {
+    const id = productItem.product.ShopProductID;
     const cartLineQuantity = document.querySelector(
-      `[data-product-id="${productItem.product.ShopProductID}"]`
+      `[data-product-id="${id}"]`
     );
 
     cartLineQuantity.addEventListener("click", (event) => {
       const targetEl = event.target;
-
       let quantityValueElm = cartLineQuantity.querySelector(".quantity-value");
       let quantityValue = quantityValueElm.textContent;
 
       if (targetEl.classList.contains("increase")) {
         quantityValue++;
       } else {
-        if (quantityValue > 1) --quantityValue;
+        --quantityValue;
       }
 
       const quantityElms = document.querySelectorAll(
-        `[data-product-id="${productItem.product.ShopProductID}"]`
+        `[data-product-id="${id}"]`
       );
-
       quantityElms.forEach((quantityElm) => {
         let quantityValueElms = quantityElm.querySelectorAll(".quantity-value");
         quantityValueElms.forEach(
-          (quantityValueElm) => (quantityValueElm.textContent = quantityValue)
+          (quantityValueElm) => {
+            quantityValueElm.textContent = quantityValue;
+            if (!quantityValue) {
+              const quantityProductElm = productsContainer.querySelector(
+                `[data-product-id="${id}"]`
+              );
+              const productDetail = quantityProductElm.parentElement;
+              quantityProductElm.remove();
+              const addToCartElm = document.createElement("span");
+              addToCartElm.classList.add("product__add-to-cart");
+              addToCartElm.dataset.productId = id;
+              addToCartElm.innerHTML = `<i class="fa-solid fa-cart-plus"></i>`;
+              productDetail.appendChild(addToCartElm);
+              addToCartElm.addEventListener("click", () =>
+                this.addToCartAction(id)
+              );
+            }
+          },
+          { once: true }
         );
       });
 
@@ -131,51 +151,56 @@ export default class UI {
     this.resetCartLayout();
     const cartItems = cart.items;
     let totalQuantity = 0;
-    cartItems.forEach((cartItem) => {
-      const article = document.createElement("article");
-      article.classList.add("cart-line");
-      let cartLineHtml = `
-          <div class="cart-line__image">
-            <img
-              src="${cartItem.product.AssociationShopProductImageFile_relativeUrl}"
-              alt="${cartItem.product.ShopProductName}"
-            />
-          </div>
-          <div class="cart-line__details">
-            <h3 class="name">${cartItem.product.ShopProductName}</h3>
-          `;
+    if (cartItems.length) {
+      cartContainer.classList.remove("empty");
+      cartItems.forEach((cartItem) => {
+        const article = document.createElement("article");
+        article.classList.add("cart-line");
+        let cartLineHtml = `
+            <div class="cart-line__image">
+              <img
+                src="${cartItem.product.AssociationShopProductImageFile_relativeUrl}"
+                alt="${cartItem.product.ShopProductName}"
+              />
+            </div>
+            <div class="cart-line__details">
+              <h3 class="name">${cartItem.product.ShopProductName}</h3>
+            `;
 
-      if (cartItem.product.PercentDiscount) {
-        cartLineHtml += `
+        if (cartItem.product.PercentDiscount) {
+          cartLineHtml += `
+                <span class="discounted-price"
+                  >${this.separator(
+                    cartItem.product.SalePrice -
+                      cartItem.product.SalePrice *
+                        (cartItem.product.PercentDiscount / 100)
+                  )}
+                </span>
+              `;
+        } else {
+          cartLineHtml += `
               <span class="discounted-price"
-                >${this.separator(
-                  cartItem.product.SalePrice -
-                    cartItem.product.SalePrice *
-                      (cartItem.product.PercentDiscount / 100)
-                )}
+                >${this.separator(cartItem.product.SalePrice)}
               </span>
             `;
-      } else {
+        }
         cartLineHtml += `
-            <span class="discounted-price"
-              >${this.separator(cartItem.product.SalePrice)}
-            </span>
-          `;
-      }
-      cartLineHtml += `
-      </div>
-          <div class="cart-line__quantity" data-product-id="${cartItem.product.ShopProductID}">
-            <span class="quantity-btn increase fa-solid fa-plus"></span>
-            <span class="quantity-value">${cartItem.quantity}</span>
-            <span class="quantity-btn decrease fa-solid fa-minus"></span>
-          </div>
-      `;
-      totalQuantity += parseInt(cartItem.quantity);
-      article.innerHTML = cartLineHtml;
-      cartContainer.appendChild(article);
+        </div>
+            <div class="cart-line__quantity" data-product-id="${cartItem.product.ShopProductID}">
+              <span class="quantity-btn increase fa-solid fa-plus"></span>
+              <span class="quantity-value">${cartItem.quantity}</span>
+              <span class="quantity-btn decrease fa-solid fa-minus"></span>
+            </div>
+        `;
+        totalQuantity += parseInt(cartItem.quantity);
+        article.innerHTML = cartLineHtml;
+        cartContainer.appendChild(article);
 
-      this.updateCartButtons(cartItem);
-    });
+        this.updateCartButtons(cartItem);
+      });
+    } else {
+      cartContainer.classList.add("empty");
+    }
 
     cart.calculateTotal();
     const quantityLabel = document.querySelector(".quantity");

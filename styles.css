@@ -247,6 +247,15 @@ body {
   max-height: 384px;
   overflow: auto;
 }
+
+.cart__container.empty {
+  background-image: url(./assets/img/empty.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  min-height: 98px;
+}
+
 .cart-line {
   display: flex;
   justify-content: space-around;
@@ -279,6 +288,8 @@ body {
   color: var(--color-white);
   cursor: pointer;
   caret-color: transparent;
+  width: 20px;
+  height: 20px;
 }
 
 .increase {
