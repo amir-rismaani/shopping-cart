@@ -3,13 +3,10 @@ import Storage from "./storage.js";
 export default class Cart {
   constructor() {
     this.items = Storage.getCart() || [];
-    this.quantity = 0;
-    this.total = 0;
   }
 
   addToCart(item) {
     this.items.push(item);
-    this.quantity = this.items.length;
     Storage.saveCart(this.items);
   }
 
@@ -21,11 +18,16 @@ export default class Cart {
     Storage.saveCart(this.items);
   }
 
-  calculateTotal() {
-    this.total = 0;
+  getTotal() {
+    let total = 0;
     this.items.forEach((item) => {
-      this.total += this.getCartLineTotal(item);
+      total += this.getCartLineTotal(item);
     });
+    return total;
+  }
+
+  getQuantity() {
+    return this.items.length;
   }
 
   getCartLineTotal(cartLine) {

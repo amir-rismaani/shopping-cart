@@ -1,5 +1,4 @@
 import { products } from "../data/products.js";
-import Storage from "./storage.js";
 
 export default class Products {
   constructor() {
@@ -7,7 +6,6 @@ export default class Products {
   }
 
   getProduct() {
-    Storage.saveProducts(this.items);
     return this.items;
   }
 

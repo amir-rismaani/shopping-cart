@@ -202,11 +202,11 @@ export default class UI {
       cartContainer.classList.add("empty");
     }
 
-    cart.calculateTotal();
     const quantityLabel = document.querySelector(".quantity");
     quantityLabel.innerText = totalQuantity;
     const total = modal.querySelector(".price");
-    total.innerHTML = this.separator(cart.total);
+    console.log(cart.getTotal());
+    total.innerHTML = this.separator(cart.getTotal());
   }
 
   resetCartLayout() {

@@ -80,6 +80,7 @@ body {
 .container {
   max-width: 1170px;
   margin: auto;
+  padding: 1.5rem !important;
 }
 
 .section-title {
